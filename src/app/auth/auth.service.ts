@@ -1,16 +1,17 @@
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+
 import { v4 as uuidv4 } from "uuid";
 
 import db from "../../db/db";
 import { IUser } from "../users/user.interface";
 
-const JWT_SECRET = "your_secret_key";
+import { jwtHelpers } from "../middleware/jwtHelper";
+import { config } from "../../config";
+import { Secret } from "jsonwebtoken";
 
 export const registerUser = async (user: IUser): Promise<IUser> => {
   const hashedPassword = await bcrypt.hash(user.password, 10);
   const newUser = { _id: uuidv4(), ...user, password: hashedPassword };
-
   return new Promise((resolve, reject) => {
     db.query("INSERT INTO users SET ?", newUser, (err) => {
       if (err) {
@@ -21,11 +22,10 @@ export const registerUser = async (user: IUser): Promise<IUser> => {
     });
   });
 };
-
 export const loginUser = async (
   email: string,
   password: string
-): Promise<string | null> => {
+): Promise<IUser | null> => {
   return new Promise((resolve, reject) => {
     db.query(
       "SELECT * FROM users WHERE email = ?",
@@ -44,12 +44,7 @@ export const loginUser = async (
               user.password
             );
             if (isPasswordValid) {
-              const token = jwt.sign(
-                { _id: user._id, role: user.role },
-                JWT_SECRET,
-                { expiresIn: "1h" }
-              );
-              resolve(token);
+              resolve(user);
             } else {
               resolve(null);
             }
