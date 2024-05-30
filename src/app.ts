@@ -8,8 +8,10 @@ import blogroute from "./app/blog/blog.route";
 import authRoute from "./app/auth/auth.route";
 import userRoute from "./app/users/user.route";
 import { errorHandler } from "./ErrorHandler/GlobalError";
+import cookieParser from "cookie-parser";
 const app = express();
 app.use(cors());
+app.use(cookieParser());
 app.use(express.json({ limit: "10mb" }));
 app.get("/", (req: Request, res: Response) => {
   res.json({ message: "server is running" });

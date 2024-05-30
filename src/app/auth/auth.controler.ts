@@ -54,7 +54,7 @@ export const loginUser = async (req: Request, res: Response) => {
       );
       res.cookie("refreshToken", refreshtoken, {
         httpOnly: true,
-        maxAge: parseInt(config.jwt_refresh_expires_in as string) * 1000,
+        maxAge: 2 * 24 * 60 * 60 * 1000,
       });
       res.status(200).json({
         success: true,
@@ -73,6 +73,44 @@ export const loginUser = async (req: Request, res: Response) => {
       success: false,
       message: (err as Error)?.message || "An error occurred",
       data: "",
+    });
+  }
+};
+
+export const refreshToken = async (req: Request, res: Response) => {
+  try {
+    const refreshToken = req.cookies.refreshToken;
+
+    if (!refreshToken) {
+      return res.status(401).json({
+        success: false,
+        message: "Refresh token not found",
+      });
+    }
+
+    const decoded: any = jwtHelpers.verrifyToken(
+      refreshToken,
+      config.jwt_refresh_token as Secret
+    );
+
+    // Generate a new access token
+    const accessToken = jwtHelpers.createToken(
+      { userId: decoded.userId },
+      config.jwt_access_token as Secret,
+      config.jwt_access_expires_in as string
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Access token refreshed successfully",
+      data: {
+        accessToken,
+      },
+    });
+  } catch (err) {
+    res.status(401).json({
+      success: false,
+      message: "Invalid refresh token",
     });
   }
 };
