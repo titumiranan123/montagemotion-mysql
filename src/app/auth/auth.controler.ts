@@ -80,11 +80,11 @@ export const loginUser = async (req: Request, res: Response) => {
 export const refreshToken = async (req: Request, res: Response) => {
   try {
     const refreshToken = req.cookies.refreshToken;
-
     if (!refreshToken) {
       return res.status(401).json({
         success: false,
-        message: "Refresh token not found",
+        message: "session expired",
+        data: "",
       });
     }
 
@@ -95,7 +95,7 @@ export const refreshToken = async (req: Request, res: Response) => {
 
     // Generate a new access token
     const accessToken = jwtHelpers.createToken(
-      { userId: decoded.userId },
+      { user: decoded },
       config.jwt_access_token as Secret,
       config.jwt_access_expires_in as string
     );
