@@ -8,6 +8,15 @@ export const db = mysql.createConnection({
 db.connect((err) => {
   if (err) {
     console.log(` Error connecting to the database : ${err}`);
+    setTimeout(() => {
+      db.connect((err) => {
+        if (err) {
+          console.log(` Error connecting to the database : ${err}`);
+          return;
+        }
+        console.log("Connect to the MySQL database.");
+      });
+    }, 3000);
     return;
   }
   console.log("Connect to the MySQL database.");
