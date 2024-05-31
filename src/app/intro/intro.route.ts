@@ -2,7 +2,6 @@ import { Router } from "express";
 import * as introController from "./intro.controler";
 
 const router = Router();
-
 router.get("/intros", introController.getAllIntros);
 router.get("/intros/:id", introController.getIntroById);
 router.post("/intros", introController.createIntro);

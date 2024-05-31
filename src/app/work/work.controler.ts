@@ -49,11 +49,17 @@ export const getPostworkById = async (req: Request, res: Response) => {
 
 export const createPostwork = async (req: Request, res: Response) => {
   try {
-    const newPostwork: IPostwork = req.body;
-    const createdPostwork = await postworkService.createPostwork({
-      ...newPostwork,
+    const newPostwork: IPostwork = {
       _id: uuidv4(),
-    });
+      title: req.body.title,
+      thumbnail: req.body.thumbnail,
+      category: req.body.category,
+      video_category: req.body.video_category || "",
+      video_link: req.body.video_link,
+      description: req.body.description,
+    };
+
+    const createdPostwork = await postworkService.createPostwork(newPostwork);
     res.status(201).json({
       success: true,
       message: "Postwork created successfully",
@@ -71,7 +77,15 @@ export const createPostwork = async (req: Request, res: Response) => {
 export const updatePostwork = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const updatedPostwork: IPostwork = req.body;
+    const updatedPostwork: IPostwork = {
+      _id: id,
+      title: req.body.title,
+      thumbnail: req.body.thumbnail,
+      category: req.body.category,
+      video_category: req.body.video_category || "",
+      video_link: req.body.video_link,
+      description: req.body.description,
+    };
     await postworkService.updatePostwork(id, updatedPostwork);
     res.status(200).json({
       success: true,

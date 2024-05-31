@@ -47,11 +47,14 @@ export const getIntroById = async (req: Request, res: Response) => {
 
 export const createIntro = async (req: Request, res: Response) => {
   try {
-    const newIntro: IIntro = req.body;
-    const createdIntro = await introService.createIntro({
-      ...newIntro,
+    const newIntro: IIntro = {
       _id: uuidv4(),
-    });
+      video_link: req.body.video_link,
+      thumbnail: req.body.thumnail,
+    };
+
+    const createdIntro = await introService.createIntro(newIntro);
+
     res.status(201).json({
       success: true,
       message: "Intro created successfully",
@@ -69,7 +72,11 @@ export const createIntro = async (req: Request, res: Response) => {
 export const updateIntro = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const updatedIntro: IIntro = req.body;
+    const updatedIntro: IIntro = {
+      _id: id,
+      video_link: req.body.video_link,
+      thumbnail: req.body.thumnail,
+    };
     await introService.updateIntro(id, updatedIntro);
     res.status(200).json({
       success: true,

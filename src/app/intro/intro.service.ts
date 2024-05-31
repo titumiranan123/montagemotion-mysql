@@ -30,10 +30,12 @@ export const getIntroById = (id: string): Promise<IIntro | null> => {
 };
 
 export const createIntro = (intro: IIntro): Promise<IIntro> => {
+  console.log(intro, "hjello");
   return new Promise((resolve, reject) => {
     db.query("INSERT INTO intros SET ?", intro, (err) => {
       if (err) {
         reject(err);
+        console.log(err);
       } else {
         resolve(intro);
       }
