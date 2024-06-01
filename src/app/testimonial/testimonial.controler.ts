@@ -52,7 +52,11 @@ export const createTestimonial = async (req: Request, res: Response) => {
       ...newTestimonial,
       _id: uuidv4(),
     });
-    res.status(201).json(createdTestimonial);
+    res.status(201).json({
+      success: true,
+      message: "Testimonial created successfully",
+      data: createdTestimonial,
+    });
   } catch (err) {
     res.send({
       success: true,
@@ -84,6 +88,7 @@ export const updateTestimonial = async (req: Request, res: Response) => {
 export const deleteTestimonial = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
+
     await testimonialService.deleteTestimonial(id);
     res.status(200).send({
       success: true,

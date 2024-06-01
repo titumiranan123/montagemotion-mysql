@@ -3,7 +3,7 @@ import { IMember } from "./member.interface";
 
 export const getAllMembers = (): Promise<IMember[]> => {
   return new Promise((resolve, reject) => {
-    db.query("SELECT * FROM members", (err, results) => {
+    db.query("SELECT * FROM members ORDER BY createdAt ASC", (err, results) => {
       if (err) {
         reject(err);
       } else {

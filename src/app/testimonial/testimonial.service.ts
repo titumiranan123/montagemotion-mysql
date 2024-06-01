@@ -3,13 +3,16 @@ import { ITestimonial } from "./testimonial.interfac";
 
 export const getAllTestimonials = (): Promise<ITestimonial[]> => {
   return new Promise((resolve, reject) => {
-    db.query("SELECT * FROM testimonials", (err, results) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(results as ITestimonial[]);
+    db.query(
+      "SELECT * FROM testimonials ORDER BY createdAt ASC",
+      (err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(results as ITestimonial[]);
+        }
       }
-    });
+    );
   });
 };
 
@@ -55,7 +58,7 @@ export const updateTestimonial = (
 ): Promise<void> => {
   return new Promise((resolve, reject) => {
     db.query(
-      "UPDATE testimonials SET ? WHERE id = ?",
+      "UPDATE testimonials SET ? WHERE _id = ?",
       [testimonial, id],
       (err) => {
         if (err) {
@@ -70,7 +73,7 @@ export const updateTestimonial = (
 
 export const deleteTestimonial = (id: string): Promise<void> => {
   return new Promise((resolve, reject) => {
-    db.query("DELETE FROM testimonials WHERE id = ?", [id], (err) => {
+    db.query("DELETE FROM testimonials WHERE _id = ?", [id], (err) => {
       if (err) {
         reject(err);
       } else {
