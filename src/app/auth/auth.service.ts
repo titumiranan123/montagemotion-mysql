@@ -1,26 +1,26 @@
-import bcrypt from "bcrypt";
-
+import bcrypt from "bcryptjs";
 import { v4 as uuidv4 } from "uuid";
 
 import db from "../../db/db";
 import { IUser } from "../users/user.interface";
-
-import { jwtHelpers } from "../middleware/jwtHelper";
-import { config } from "../../config";
-import { Secret } from "jsonwebtoken";
-
 export const registerUser = async (user: IUser): Promise<IUser> => {
-  const hashedPassword = await bcrypt.hash(user.password, 10);
-  const newUser = { _id: uuidv4(), ...user, password: hashedPassword };
-  return new Promise((resolve, reject) => {
-    db.query("INSERT INTO users SET ?", newUser, (err) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(newUser);
-      }
+  try {
+    const hashedPassword = await bcrypt.hash(user.password, 10);
+    const newUser = { _id: uuidv4(), ...user, password: hashedPassword };
+    await new Promise((resolve, reject) => {
+      db.query("INSERT INTO users SET ?", newUser, (err) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(newUser);
+        }
+      });
     });
-  });
+
+    return newUser;
+  } catch (error) {
+    throw error;
+  }
 };
 export const loginUser = async (
   email: string,

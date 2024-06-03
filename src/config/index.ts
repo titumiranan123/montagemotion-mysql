@@ -5,9 +5,14 @@ dotenv.config({ path: path.join(process.cwd(), ".env") });
 
 export const config = {
   port: process.env.PORT,
-  database_url: process.env.DATABASE_URL,
-  database_pass: process.env.DATABASE_PASS,
-  database_user: process.env.DATABASE_USER,
+  database_host: process.env.DB_HOST || "localhost",
+  database_user: process.env.DB_USER || "root",
+  database_pass: process.env.DB_PASSWORD || "725RA38et%",
+  database_name: process.env.DB_DATABASE || "montagemotion",
+
+  database_connection_limit: Number(process.env.DB_CONNECTION_LIMIT) || 10,
+  database_queue_limit: Number(process.env.DB_QUEUE_LIMIT) || 0,
+
   jwt_access_token: process.env.JWT_ACCESS_TOKEN_HASH,
   jwt_refresh_token: process.env.JWT_REFRESH_TOKEN_HASH,
   bcrypt_hash: process.env.BCYPT_HASH,
