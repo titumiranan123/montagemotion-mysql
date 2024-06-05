@@ -7,13 +7,14 @@ import {
   getCaseById,
   updateCase,
 } from "./case.controler";
+import auth from "../middleware/authMiddleware";
 
 const router = express.Router();
 
 router.get("/cases", getAllCase);
 router.get("/cases/:id", getCaseById);
-router.post("/cases", createCase);
-router.put("/cases/:id", updateCase);
-router.delete("/cases/:id", deleteCase);
+router.post("/cases", auth("admin"), createCase);
+router.put("/cases/:id", auth("admin"), updateCase);
+router.delete("/cases/:id", auth("admin"), deleteCase);
 
 export default router;

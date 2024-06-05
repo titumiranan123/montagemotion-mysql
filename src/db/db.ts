@@ -18,22 +18,22 @@ const db = mysql.createPool({
 // Handle initial connection
 db.getConnection((err, connection) => {
   if (err) {
-    console.error(`Error connecting to the database: ${err.message}`);
+    // console.error(`Error connecting to the database: ${err.message}`);
     return;
   }
-  console.log("Connected to the MySQL database.");
+  // console.log("Connected to the MySQL database.");
   connection.release(); // Release the connection
 });
 
 // Function to handle reconnection
 const handleDisconnect = () => {
-  console.log("Reconnecting to the database...");
+  // console.log("Reconnecting to the database...");
   db.getConnection((err, connection) => {
     if (err) {
-      console.error(`Error reconnecting to the database: ${err.message}`);
+      // console.error(`Error reconnecting to the database: ${err.message}`);
       setTimeout(handleDisconnect, 2000);
     } else {
-      console.log("Reconnected to the database.");
+      // console.log("Reconnected to the database.");
       connection.release(); // Release the connection
     }
   });

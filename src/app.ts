@@ -25,7 +25,6 @@ app.use("/api/v1", introroute);
 app.use("/api/v1", postworkRoute);
 app.use("/api/v1", blogroute);
 app.use("/api/v1", caseRoute);
-
 app.use("/api/v1", authRoute);
 app.use("/api/v1", userRoute);
 
