@@ -11,6 +11,7 @@ import userRoute from "./app/users/user.route";
 import cookieParser from "cookie-parser";
 import globalErrorHandler from "./ErrorHandler/GlobalError";
 import notFoundHandler from "./ErrorHandler/notFoundHandler";
+import recentVideo from "./app/recentvideo/recent.route";
 const app = express();
 app.use(cors());
 app.use(cookieParser());
@@ -27,6 +28,7 @@ app.use("/api/v1", blogroute);
 app.use("/api/v1", caseRoute);
 app.use("/api/v1", authRoute);
 app.use("/api/v1", userRoute);
+app.use("/api/v1", recentVideo);
 
 app.use(notFoundHandler);
 app.use(globalErrorHandler);
